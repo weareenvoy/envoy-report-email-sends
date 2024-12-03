@@ -22,8 +22,9 @@ endif;
 function envoy_report_email_sends_schedule() {
 	// Ensure plugin is active
 	if ( is_plugin_active( plugin_basename( __FILE__ ) ) && ! wp_next_scheduled( 'envoy_report_email_send_cron_hook' ) ) {
-			// Schedule the event to run daily
-			wp_schedule_event( time(), 'daily', 'envoy_report_email_send_cron_hook' );
+			// Schedule the event to run daily at 5 PM UTC (which is 9 AM PST)
+			$timestamp = strtotime('today 17:00 UTC');
+			wp_schedule_event( $timestamp, 'daily', 'envoy_report_email_send_cron_hook' );
 	}
 }
 add_action( 'plugins_loaded', 'envoy_report_email_sends_schedule' );

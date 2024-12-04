@@ -169,6 +169,8 @@ class Envoy_ReportEmailSends_ReportGenerator {
 					case 'from':
 						$_FROM = $_value;
 						break;
+					case 'Content-Type':
+					case 'content-type':
 					case 'X-WPCF7-Content-Type':
 					case 'x-wpcf7-content-type':
 						//	This exists when WordPress Plugin ContactForm7 sends an email.

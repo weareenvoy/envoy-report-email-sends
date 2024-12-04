@@ -38,8 +38,8 @@ function envoy_report_email_send_function() {
 
   $message = 'envoy_report_email_send has run on cron: ' . date( 'Y-m-d H:i:s' ) . "\n";
 	// abspath is /www/wp-preview.corvel.corvel-marketing.com/current/web/wp/
-	$root = dirname(dirname( dirname( ABSPATH ) ));
-	$log_file = $root . '/shared/log/wp-cron.log';
+	list( $root ) = explode( 'current', ABSPATH );
+	$log_file = $root . 'shared/log/wp-cron.log';
   file_put_contents( $log_file, $message, FILE_APPEND );
 
 }

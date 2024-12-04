@@ -13,7 +13,7 @@ Set up a server-side heartbeat cron job to call at regular intervals to ensure W
 2. **Add the following line to trigger WordPress cron every 5 minutes (adjust the frequency as needed):**
 
    ```bash
-   */5 * * * * /usr/local/bin/wp cron event run --due-now --path=/www/{wp-xxx.xxx.com}/current/web/wp >> /www/wp
+   */5 * * * * /usr/local/bin/wp cron event run --due-now --path=/www/{wp-xxx.xxx.com}/current/web/wp >> /www/{wp-xxx.xxx.com}/shared/log/wp-cron.log 2>&1
    ```
 
 ### How do I install this plugin using composer?

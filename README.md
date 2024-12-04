@@ -26,7 +26,7 @@ Add this to your project's existing `composer.json`:
 
     {
       "type": "vcs",
-      "url": "https://github.com/weareenvoy/envoy-report-email-sends.git"
+      "url": "https://github.com/weareenvoy/wordpress-plugin-envoy-report-email-sends.git"
     }
 
     ...
@@ -37,16 +37,16 @@ Add this to your project's existing `composer.json`:
 Then from the terminal, run:
 
 ```
-composer require envoy/envoy-report-email-sends;
+composer require envoy/wordpress-plugin-envoy-report-email-sends;
 ```
 
 The plugin files will be placed into your project directory at:
 ```
-/web/app/plugins/envoy-report-email-sends
+/web/app/plugins/wordpress-plugin-envoy-report-email-sends
 ```
 
 Add this to your project's `.gitignore`:
 
 ```
-**/plugins/envoy-report-email-sends
+**/plugins/wordpress-plugin-envoy-report-email-sends
 ```

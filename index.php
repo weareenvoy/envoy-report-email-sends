@@ -11,9 +11,11 @@ if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 require_once __DIR__ . '/src/ReportEmailSends/index.php';
 require_once __DIR__ . '/src/ReportEmailSends/AdminSettings/index.php';
 require_once __DIR__ . '/src/ReportEmailSends/ReportGenerator/index.php';
+require_once __DIR__ . '/src/ReportEmailSends/Utilities/index.php';
 
 if( is_admin() ):
-	$ERESRG	=	new Envoy_ReportEmailSends_ReportGenerator;
+	$ERESU	=	new Envoy_ReportEmailSends_Utilities;
+	$ERESRG	=	new Envoy_ReportEmailSends_ReportGenerator($ERESU);
 	$ERES	=	new Envoy_ReportEmailSends($ERESRG);
 	$ERESAS	=	new Envoy_ReportEmailSends_AdminSettings($ERES);
 endif;

@@ -4,30 +4,35 @@ class Envoy_ReportEmailSends_ReportGenerator {
 	private $rows_o_ses_lite_plugin;
 	private $rows_cf7_plugin;
 
-	public function __construct(){
+	public function __construct(Envoy_ReportEmailSends_Utilities $ERESU){
 		//  Make sure temp directory is present
+		$this->ERESU = $ERESU;
 		$structure = SELF::getTempSaveDirectory();
 		mkdir($structure, 0777, true);
 		
 	}
 
-	static function getTempSaveDirectory(){
-		return sprintf('%senvoy_email_send_reports',get_temp_dir());
+	// TODO these 4. change some to private, some to public?
+	private function getTempSaveDirectory(){
+    return sprintf('%s%s/envoy_email_send_reports',
+			get_temp_dir(),
+			$this->ERESU->getPluginSettingValue('brand_name')
+    );
 	}
 
-	static function getTempSaveFilename(){
+	public function getTempSaveFilename(){
 		return sprintf('%s/%s-email-report.csv',
-			SELF::getTempSaveDirectory(),
-			SELF::getTargetDateFromParameter()->format('Y-m-d'),
+			$this->getTempSaveDirectory(),
+			$this->getTargetDateFromParameter()->format('Y-m-d')
 		);
 	}
 
-	static function getTargetDateFromParameter(){
-		$parameter = $_POST['target_date'] ?? 'YESTERDAY' ;
+	public function getTargetDateFromParameter(){
+		$parameter = $_POST['target_date'] ?? 'YESTERDAY';
 		return new DateTime($parameter, new DateTimeZone('America/Los_Angeles'));
 	}
 
-	static function getDateRangeFromParameter(){
+	private function getDateRangeFromParameter(){
 		$parameter = $_POST['date_range'] ?? '1' ;
 		return $parameter;
 	}

@@ -2,21 +2,24 @@
 
 class Envoy_ReportEmailSends {
 
-	static $brand_name = 'Corvel';
+	private $brand_name = 'Wordpress';
 
 	private $plugin_options;
 
-	public function __construct($ERESRG) {
-		$this->ERESRG = $ERESRG;	//	ReportGenerator
+	public function __construct(Envoy_ReportEmailSends_ReportGenerator $ERESRG) {
+			$this->ERESRG = $ERESRG; // ReportGenerator
+			$this->brand_name = $this->getPluginSettingValue('brand_name');
 	}
 
 	public function sendEmail(){
 
 		//	Generate the Report to send
 		if( $this->ERESRG->generate() ):
-			$file_path = Envoy_ReportEmailSends_ReportGenerator::getTempSaveFilename();
+			// TODO Non-static method Envoy_ReportEmailSends_ReportGenerator::getTempSaveFilename() cannot be called statically
+			// $file_path = Envoy_ReportEmailSends_ReportGenerator::getTempSaveFilename();
+			$file_path = $this->ERESRG->getTempSaveFilename();
 			$to = $this->getPluginSettingValue('send_email_recipient_to');
-			$subject = sprintf("%s | 'Email Send' Report", SELF::$brand_name);
+			$subject = sprintf("%s | 'Email Send' Report", $this->brand_name);
 			$message_text = $this->_getEmailMessageText();
 			$headers = $this->_getEmailHeaders();
 			$attachments = [$file_path];
@@ -38,8 +41,9 @@ class Envoy_ReportEmailSends {
 			"\r\n",
 			"Attached to this email is a `.csv` report of emails sent.",
 			sprintf("For '%s' on date: '%s'",
-				SELF::$brand_name,
-				Envoy_ReportEmailSends_ReportGenerator::getTargetDateFromParameter()->format('Y-m-d'),
+				$this->brand_name,
+				// TODO non static method cannot be called ... Envoy_ReportEmailSends_ReportGenerator::getTargetDateFromParameter()->format('Y-m-d'),
+				$this->ERESRG->getTargetDateFromParameter()->format('Y-m-d')
 			),
 			"\r\n",
 			"Have a great day!",
@@ -79,7 +83,7 @@ class Envoy_ReportEmailSends {
 	//	-------
 	public function getPluginSettingValue($field_id, $normalize_value = false){
 		if( !$this->plugin_options ):
- 			$envoy_plugin_options = get_option( sprintf('%s_option_name', Envoy_ReportEmailSends_AdminSettings::$NS) ); // Array of All Options
+			$envoy_plugin_options = get_option( sprintf('%s_option_name', Envoy_ReportEmailSends_AdminSettings::$NS) ); // Array of All Options
 			$this->plugin_options = $envoy_plugin_options;
 		endif;
 

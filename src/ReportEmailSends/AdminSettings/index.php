@@ -10,7 +10,7 @@ class Envoy_ReportEmailSends_AdminSettings {
 	static $NS			=	'envoy_report_email_sends';
 	static $NS_HANDLE	=	'envoy-report-email-sends';
 
-	public function __construct($ERES) {
+	public function __construct(Envoy_ReportEmailSends $ERES) {
 		add_action( 'admin_menu', array( $this, sprintf('%s_add_plugin_page', SELF::$NS) ) );
 		add_action( 'admin_init', array( $this, sprintf('%s_page_init', SELF::$NS) ) );
 		$this->ERES = $ERES;
@@ -162,6 +162,13 @@ class Envoy_ReportEmailSends_AdminSettings {
 			sprintf('%s_setting_section_email_sending', SELF::$NS)	// section
 		);
 
+		add_settings_field(
+			'brand_name',								// id
+			'📧 Brand Name',											// title
+			array( $this, 'brand_name_callback' ),		// callback
+			sprintf('%s-admin', SELF::$NS_HANDLE),					// page
+			sprintf('%s_setting_section_email_sending', SELF::$NS)	// section
+		);
 	}
 
 	//	-----------
@@ -218,6 +225,17 @@ class Envoy_ReportEmailSends_AdminSettings {
 		printf(
 			'<input class="regular-text" type="text" name="%s_option_name[%s]" id="%s" value="%s">
 			<div style="color:lightslategrey; font-style:italic;">The email address to use as the sender of this report.</div>',
+			SELF::$NS,
+			$field_id,
+			$field_id,
+			$this->ERES->getPluginSettingValue($field_id, true)
+		);
+	}
+	public function brand_name_callback() {
+		$field_id = 'brand_name';
+		printf(
+			'<input class="regular-text" type="text" name="%s_option_name[%s]" id="%s" value="%s">
+			<div style="color:lightslategrey; font-style:italic;">The unique brand name.</div>',
 			SELF::$NS,
 			$field_id,
 			$field_id,

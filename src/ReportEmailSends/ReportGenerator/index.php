@@ -12,7 +12,6 @@ class Envoy_ReportEmailSends_ReportGenerator {
 		
 	}
 
-	// TODO these 4. change some to private, some to public?
 	private function getTempSaveDirectory(){
     return sprintf('%s%s/envoy_email_send_reports',
 			get_temp_dir(),

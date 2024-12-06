@@ -15,7 +15,6 @@ class Envoy_ReportEmailSends {
 
 		//	Generate the Report to send
 		if( $this->ERESRG->generate() ):
-			// TODO Non-static method Envoy_ReportEmailSends_ReportGenerator::getTempSaveFilename() cannot be called statically
 			// $file_path = Envoy_ReportEmailSends_ReportGenerator::getTempSaveFilename();
 			$file_path = $this->ERESRG->getTempSaveFilename();
 			$to = $this->getPluginSettingValue('send_email_recipient_to');
@@ -42,7 +41,6 @@ class Envoy_ReportEmailSends {
 			"Attached to this email is a `.csv` report of emails sent.",
 			sprintf("For '%s' on date: '%s'",
 				$this->brand_name,
-				// TODO non static method cannot be called ... Envoy_ReportEmailSends_ReportGenerator::getTargetDateFromParameter()->format('Y-m-d'),
 				$this->ERESRG->getTargetDateFromParameter()->format('Y-m-d')
 			),
 			"\r\n",
@@ -60,7 +58,7 @@ class Envoy_ReportEmailSends {
 		$headers = [];
 
 		//	From
-		$headers[] = sprintf("From: CorVel DoNotReply <%s>", $this->getPluginSettingValue('send_email_from_address') );
+    $headers[] = sprintf("From: %s DoNotReply <%s>", $this->brand_name, $this->getPluginSettingValue('send_email_from_address') );
 
 		//	CC
 		$cc_emails = SELF::arrayFromCommaSeparatedString( $this->getPluginSettingValue('send_email_recipients_cc') );

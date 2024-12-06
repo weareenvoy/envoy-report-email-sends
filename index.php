@@ -34,15 +34,23 @@ add_action( 'plugins_loaded', 'envoy_report_email_sends_schedule' );
 
 // Function to send the email
 function envoy_report_email_send_function() {
-	$report_generator = new Envoy_ReportEmailSends_ReportGenerator();
+	$report_utilities = new Envoy_ReportEmailSends_Utilities();
+	$report_generator = new Envoy_ReportEmailSends_ReportGenerator( $report_utilities );
 	$report_email_sender = new Envoy_ReportEmailSends( $report_generator );
 	$report_email_sender->sendEmail();
 
   $message = 'envoy_report_email_send has run on cron: ' . date( 'Y-m-d H:i:s' ) . "\n";
-	// abspath is /www/wp-preview.corvel.corvel-marketing.com/current/web/wp/
 	list( $root ) = explode( 'current', ABSPATH );
 	$log_file = $root . 'shared/log/wp-cron.log';
   file_put_contents( $log_file, $message, FILE_APPEND );
 
 }
 add_action( 'envoy_report_email_send_cron_hook', 'envoy_report_email_send_function' );
+
+// Unregister cron event when plugin is deactivated
+function envoy_report_email_sends_unschedule() {
+	if ( wp_next_scheduled( 'envoy_report_email_send_cron_hook' ) ) {
+			wp_clear_scheduled_hook( 'envoy_report_email_send_cron_hook' );
+	}
+}
+register_deactivation_hook( __FILE__, 'envoy_report_email_sends_unschedule' );

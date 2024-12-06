@@ -26,7 +26,7 @@ Add this to your project's existing `composer.json`:
 
     {
       "type": "vcs",
-      "url": "https://github.com/weareenvoy/envoy-report-email-sends.git"
+      "url": "https://github.com/weareenvoy/wordpress-plugin-envoy-report-email-sends.git"
     }
 
     ...

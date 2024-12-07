@@ -4,34 +4,34 @@ class Envoy_ReportEmailSends_ReportGenerator {
 	private $rows_o_ses_lite_plugin;
 	private $rows_cf7_plugin;
 
-	public function __construct(Envoy_ReportEmailSends_Utilities $ERESU){
+	public function __construct(){
 		//  Make sure temp directory is present
-		$this->ERESU = $ERESU;
 		$structure = SELF::getTempSaveDirectory();
-		mkdir($structure, 0777, true);
-		
+		if (!is_dir($structure)):
+			mkdir($structure, 0777, true);
+		endif;
 	}
 
 	private function getTempSaveDirectory(){
-    return sprintf('%s%s/envoy_email_send_reports',
+    return sprintf('%senvoy_email_send_reports/%s',
 			get_temp_dir(),
-			$this->ERESU->getPluginSettingValue('brand_name')
+			strtolower(trim(Envoy_ReportEmailSends_Utilities::getPluginSettingValue('brand_name')))
     );
 	}
 
 	public function getTempSaveFilename(){
 		return sprintf('%s/%s-email-report.csv',
 			$this->getTempSaveDirectory(),
-			$this->getTargetDateFromParameter()->format('Y-m-d')
+			SELF::getTargetDateFromParameter()->format('Y-m-d')
 		);
 	}
 
-	public function getTargetDateFromParameter(){
+	static function getTargetDateFromParameter(){
 		$parameter = $_POST['target_date'] ?? 'YESTERDAY';
 		return new DateTime($parameter, new DateTimeZone('America/Los_Angeles'));
 	}
 
-	private function getDateRangeFromParameter(){
+	static function getDateRangeFromParameter(){
 		$parameter = $_POST['date_range'] ?? '1' ;
 		return $parameter;
 	}
@@ -67,6 +67,9 @@ class Envoy_ReportEmailSends_ReportGenerator {
 		//	Prep .csv FilePointer
 		//	---------------------
 		$fp_client_facing = fopen(SELF::getTempSaveFilename(), 'w');
+		if (!$fp_client_facing):
+			throw new Exception(sprintf('Envoy_ReportEmailSends_ReportGenerator: Unable to open file "%s"', SELF::getTempSaveFilename()));
+		endif;
 
 		//	----------------------
 		//	Create .csv Header Row

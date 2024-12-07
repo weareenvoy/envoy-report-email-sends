@@ -8,7 +8,7 @@ class Envoy_ReportEmailSends {
 
 	public function __construct(Envoy_ReportEmailSends_ReportGenerator $ERESRG) {
 			$this->ERESRG = $ERESRG; // ReportGenerator
-			$this->brand_name = $this->getPluginSettingValue('brand_name');
+			$this->brand_name = Envoy_ReportEmailSends_Utilities::getPluginSettingValue('brand_name');
 	}
 
 	public function sendEmail(){
@@ -17,7 +17,7 @@ class Envoy_ReportEmailSends {
 		if( $this->ERESRG->generate() ):
 			// $file_path = Envoy_ReportEmailSends_ReportGenerator::getTempSaveFilename();
 			$file_path = $this->ERESRG->getTempSaveFilename();
-			$to = $this->getPluginSettingValue('send_email_recipient_to');
+			$to = Envoy_ReportEmailSends_Utilities::getPluginSettingValue('send_email_recipient_to');
 			$subject = sprintf("%s | 'Email Send' Report", $this->brand_name);
 			$message_text = $this->_getEmailMessageText();
 			$headers = $this->_getEmailHeaders();
@@ -58,16 +58,16 @@ class Envoy_ReportEmailSends {
 		$headers = [];
 
 		//	From
-    $headers[] = sprintf("From: %s DoNotReply <%s>", $this->brand_name, $this->getPluginSettingValue('send_email_from_address') );
+    $headers[] = sprintf("From: %s DoNotReply <%s>", $this->brand_name, Envoy_ReportEmailSends_Utilities::getPluginSettingValue('send_email_from_address') );
 
 		//	CC
-		$cc_emails = SELF::arrayFromCommaSeparatedString( $this->getPluginSettingValue('send_email_recipients_cc') );
+		$cc_emails = SELF::arrayFromCommaSeparatedString( Envoy_ReportEmailSends_Utilities::getPluginSettingValue('send_email_recipients_cc') );
 		foreach( $cc_emails AS $_email ):
 			$headers[] = sprintf('Cc: %s', $_email);
 		endforeach;
 		
 		//	BCC
-		$bcc_emails = SELF::arrayFromCommaSeparatedString( $this->getPluginSettingValue('send_email_recipients_bcc') );
+		$bcc_emails = SELF::arrayFromCommaSeparatedString( Envoy_ReportEmailSends_Utilities::getPluginSettingValue('send_email_recipients_bcc') );
 		foreach( $cc_emails AS $_email ):
 			$headers[] = sprintf('Bcc: %s', $_email);
 		endforeach;
@@ -79,25 +79,6 @@ class Envoy_ReportEmailSends {
 	//	-------
 	//	Helpers
 	//	-------
-	public function getPluginSettingValue($field_id, $normalize_value = false){
-		if( !$this->plugin_options ):
-			$envoy_plugin_options = get_option( sprintf('%s_option_name', Envoy_ReportEmailSends_AdminSettings::$NS) ); // Array of All Options
-			$this->plugin_options = $envoy_plugin_options;
-		endif;
-
-		//	Guard
-		if( !isset( $this->plugin_options[$field_id] ) ):
-			return '';
-		endif;
-
-		$value = $this->plugin_options[$field_id];
-
-		if( $normalize_value ):
-			return esc_attr( $value );
-		endif;
-
-		return $value;
-	}
 
 	static function arrayFromCommaSeparatedString($comma_separated_string=''){
 		$array = array_map(

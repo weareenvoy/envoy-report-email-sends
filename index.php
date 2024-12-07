@@ -34,8 +34,7 @@ add_action( 'plugins_loaded', 'envoy_report_email_sends_schedule' );
 
 // Function to send the email
 function envoy_report_email_send_function() {
-	$report_utilities = new Envoy_ReportEmailSends_Utilities();
-	$report_generator = new Envoy_ReportEmailSends_ReportGenerator( $report_utilities );
+	$report_generator = new Envoy_ReportEmailSends_ReportGenerator();
 	$report_email_sender = new Envoy_ReportEmailSends( $report_generator );
 	$report_email_sender->sendEmail();
 
@@ -47,7 +46,7 @@ function envoy_report_email_send_function() {
 }
 add_action( 'envoy_report_email_send_cron_hook', 'envoy_report_email_send_function' );
 
-// Unregister cron event when plugin is deactivated
+
 function envoy_report_email_sends_unschedule() {
 	if ( wp_next_scheduled( 'envoy_report_email_send_cron_hook' ) ) {
 			wp_clear_scheduled_hook( 'envoy_report_email_send_cron_hook' );

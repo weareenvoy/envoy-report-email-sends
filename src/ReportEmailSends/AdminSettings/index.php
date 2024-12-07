@@ -104,7 +104,7 @@ class Envoy_ReportEmailSends_AdminSettings {
 	//	-------
 	public function envoy_report_email_sends_page_init() {
 
-		if( $_POST['action']=='generate' ):
+		if( isset($_POST['action']) && $_POST['action']=='generate' ):
 
 			list($success, $file_path) = $this->ERES->sendEmail();
 
@@ -195,7 +195,7 @@ class Envoy_ReportEmailSends_AdminSettings {
 			SELF::$NS,
 			$field_id,
 			$field_id,
-			$this->ERES->getPluginSettingValue($field_id, true)
+			Envoy_ReportEmailSends_Utilities::getPluginSettingValue($field_id, true)
 		);
 	}
 	public function send_email_recipients_cc_callback() {
@@ -206,7 +206,7 @@ class Envoy_ReportEmailSends_AdminSettings {
 			SELF::$NS,
 			$field_id,
 			$field_id,
-			$this->ERES->getPluginSettingValue($field_id, true)
+			Envoy_ReportEmailSends_Utilities::getPluginSettingValue($field_id, true)
 		);
 	}
 	public function send_email_recipients_bcc_callback() {
@@ -217,7 +217,7 @@ class Envoy_ReportEmailSends_AdminSettings {
 			SELF::$NS,
 			$field_id,
 			$field_id,
-			$this->ERES->getPluginSettingValue($field_id, true)
+			Envoy_ReportEmailSends_Utilities::getPluginSettingValue($field_id, true)
 		);
 	}
 	public function send_email_from_address_callback() {
@@ -228,7 +228,7 @@ class Envoy_ReportEmailSends_AdminSettings {
 			SELF::$NS,
 			$field_id,
 			$field_id,
-			$this->ERES->getPluginSettingValue($field_id, true)
+			Envoy_ReportEmailSends_Utilities::getPluginSettingValue($field_id, true)
 		);
 	}
 	public function brand_name_callback() {
@@ -239,7 +239,7 @@ class Envoy_ReportEmailSends_AdminSettings {
 			SELF::$NS,
 			$field_id,
 			$field_id,
-			$this->ERES->getPluginSettingValue($field_id, true)
+			Envoy_ReportEmailSends_Utilities::getPluginSettingValue($field_id, true)
 		);
 	}
 
